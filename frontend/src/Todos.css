@@ -1,0 +1,59 @@
+.todos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.todo-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px;
+  width: 300px;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.todo-item h1 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.todo-item h2 {
+  font-size: 1em;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.complete-button, .delete-button, .edit-button {
+  padding: 10px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.complete-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.complete-button:disabled {
+  background-color: #a5d6a7;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-button:disabled {
+  background-color: #ef9a9a;
+}
+
+.edit-button {
+  background-color: #ffc107;
+  color: white;
+}

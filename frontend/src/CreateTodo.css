@@ -1,0 +1,23 @@
+.create-todo {
+    padding: 20px;
+    text-align: left;
+  }
+  
+  .create-todo input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .create-todo button {
+    padding: 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+  }
+  
