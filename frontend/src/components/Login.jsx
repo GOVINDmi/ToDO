@@ -19,6 +19,8 @@ function Login({ setToken }) {
     const data = await response.json();
 
     if (data.token) {
+      console.log("Token received:", data.token); // Log the token to console
+      localStorage.setItem('token', data.token); // Save the token to localStorage
       setToken(data.token);
     } else {
       alert(data.msg);

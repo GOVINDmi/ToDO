@@ -10,10 +10,11 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentTodo, setCurrentTodo] = useState({});
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
 
   useEffect(() => {
     if (token) {
+      console.log("Token in useEffect:", token); // Log the token to console
       fetch("http://localhost:3000/todo", {
         headers: {
           Authorization: `Bearer ${token}`
@@ -25,6 +26,11 @@ function App() {
       });
     }
   }, [token]);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setToken(null);
+  };
 
   const markAsCompleted = (id, todo) => {
     fetch(`http://localhost:3000/completed/${id}`, {
@@ -89,19 +95,12 @@ function App() {
     });
   };
 
-
-  const logout = (req,res)=> {
-    console.log(req);
-    console.log("Authentication",req.headers);
-    setToken(null);
-  };
-
   if (!token) {
     return (
       <div>
         <h1>Login</h1>
         <Login setToken={setToken} />
-        <h1>SignUp</h1>
+        <h1>Register</h1>
         <Register />
       </div>
     );
@@ -128,5 +127,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
