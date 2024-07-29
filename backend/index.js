@@ -1,4 +1,5 @@
 const { createTodo } = require("./type.js");
+require("dotenv").config();
 const { Todo } = require("./db.js");
 const express = require("express");
 const authMiddleware = require("./authMiddleware");

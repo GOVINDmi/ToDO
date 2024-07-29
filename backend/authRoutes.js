@@ -2,11 +2,9 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { User } = require("./db.js");
-const zod = require("zod");
+const { userSchema } = require("./type.js");
 
 const router = express.Router();
-
-const {userSchema} = require("./type.js")
 
 router.post("/SignUp", async (req, res) => {
   const { username, password } = req.body;
@@ -36,11 +34,12 @@ router.post("/SignUp", async (req, res) => {
       }
     };
 
-    jwt.sign(payload, "your_jwt_secret", { expiresIn: "1h" }, (err, token) => {
+    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" }, (err, token) => {
       if (err) throw err;
       res.json({
-        msg:"User is Registered",
-         token });
+        msg: "User is Registered",
+        token
+      });
     });
   } catch (err) {
     console.error(err.message);
@@ -75,7 +74,7 @@ router.post("/login", async (req, res) => {
       }
     };
 
-    jwt.sign(payload, "your_jwt_secret", { expiresIn: "1h" }, (err, token) => {
+    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" }, (err, token) => {
       if (err) throw err;
       res.json({ token });
     });
