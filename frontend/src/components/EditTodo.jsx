@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../EditTodo.css';
 
-export function EditTodo({ currentTodo, editTodo, setIsEditing }) {
+export function EditTodo({ currentTodo, editTodo }) {
   const [title, setTitle] = useState(currentTodo.title);
   const [description, setDescription] = useState(currentTodo.description);
+  const navigate = useNavigate();
+
+  const handleSave = () => {
+    editTodo(currentTodo._id, { ...currentTodo, title, description, completed: false });
+    navigate('/create-todo'); // Navigate to CreateTodo component after saving changes
+  };
 
   return (
     <div className="edit-todo">
@@ -19,19 +26,17 @@ export function EditTodo({ currentTodo, editTodo, setIsEditing }) {
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <button
-        onClick={() => {
-          editTodo(currentTodo._id, { ...currentTodo, title, description, completed: false });
-        }}
-      >
+      <button onClick={handleSave}>
         Save
       </button>
       <button
         className="cancel-button"
-        onClick={() => setIsEditing(false)}
+        onClick={() => navigate('/create-todo')}
       >
         Cancel
       </button>
     </div>
   );
 }
+
+export default EditTodo;

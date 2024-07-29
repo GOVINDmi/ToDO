@@ -1,7 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../Todos.css';
 
 export function Todos({ todos, markAsCompleted, deleteTodo, startEditing }) {
+  const navigate = useNavigate();
+
+  const handleEditClick = (todo) => {
+    startEditing(todo);
+    navigate('/edit-todo');
+  };
+
   return (
     <div className="todos">
       {todos.map((todo) => (
@@ -24,7 +32,7 @@ export function Todos({ todos, markAsCompleted, deleteTodo, startEditing }) {
           </button>
           <button
             className="edit-button"
-            onClick={() => startEditing(todo)}
+            onClick={() => handleEditClick(todo)}
           >
             Edit
           </button>

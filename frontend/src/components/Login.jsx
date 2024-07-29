@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../Login.css';
 
-function Login({ setToken }) {
+function Login({ setToken, setIsLoggedIn }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,9 +21,10 @@ function Login({ setToken }) {
     const data = await response.json();
 
     if (data.token) {
-      console.log("Token received:", data.token); // Log the token to console
       localStorage.setItem('token', data.token); // Save the token to localStorage
       setToken(data.token);
+      setIsLoggedIn(true); // Update login status
+      navigate('/create-todo'); // Redirect to CreateTodo component
     } else {
       alert(data.msg);
     }
@@ -29,6 +32,7 @@ function Login({ setToken }) {
 
   return (
     <form className="login-form" onSubmit={handleSubmit}>
+      <h1>Login</h1>
       <input
         type="text"
         placeholder="Username"
@@ -42,6 +46,7 @@ function Login({ setToken }) {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button type="submit">Login</button>
+      <button type="button" onClick={() => navigate('/register')}>Sign Up</button>
     </form>
   );
 }

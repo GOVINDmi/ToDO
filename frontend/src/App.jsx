@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import './App.css';
 import { CreateTodo } from './components/CreateTodo';
 import { Todos } from './components/Todos';
-import { EditTodo } from './components/EditTodo';
+import EditTodo from './components/EditTodo';
 import Login from './components/Login';
 import Register from './components/Register';
 
@@ -11,10 +12,10 @@ function App() {
   const [isEditing, setIsEditing] = useState(false);
   const [currentTodo, setCurrentTodo] = useState({});
   const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [isLoggedIn, setIsLoggedIn] = useState(token ? true : false); // Track login status
 
   useEffect(() => {
     if (token) {
-      console.log("Token in useEffect:", token); // Log the token to console
       fetch("http://localhost:3000/todo", {
         headers: {
           Authorization: `Bearer ${token}`
@@ -30,6 +31,7 @@ function App() {
   const logout = () => {
     localStorage.removeItem('token');
     setToken(null);
+    setIsLoggedIn(false); // Update login status upon logout
   };
 
   const markAsCompleted = (id, todo) => {
@@ -95,36 +97,26 @@ function App() {
     });
   };
 
-  if (!token) {
-    return (
-      <div>
-        <h1>Login</h1>
-        <Login setToken={setToken} />
-        <h1>Register</h1>
-        <Register />
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <button onClick={logout}>Logout</button>
-      <CreateTodo setTodos={setTodos} todos={todos} token={token} />
-      {isEditing ? (
-        <EditTodo
-          currentTodo={currentTodo}
-          editTodo={editTodo}
-          setIsEditing={setIsEditing}
-        />
-      ) : (
-        <Todos
-          todos={todos}
-          markAsCompleted={markAsCompleted}
-          deleteTodo={deleteTodo}
-          startEditing={startEditing}
-        />
-      )}
-    </div>
+    <Router>
+      {isLoggedIn && (<><button className="logout-button" onClick={logout}>Logout</button> <br></br> <br></br> </>)}
+      <Routes>
+        <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login setToken={setToken} setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/register" element={<Register />} />
+        {isLoggedIn ? (
+          <>
+            <Route path="/create-todo" element={<CreateTodo setTodos={setTodos} todos={todos} token={token} startEditing={startEditing}  />} />
+           
+            <Route path="/edit-todo" element={<EditTodo currentTodo={currentTodo} editTodo={editTodo} setIsEditing={setIsEditing} />} />
+            <Route path="*" element={<Navigate to="/create-todo" />} />
+          </>
+        ) : (
+          <Route path="*" element={<Navigate to="/login" />} />
+        )}
+      </Routes>
+     
+    </Router>
   );
 }
+
 export default App;

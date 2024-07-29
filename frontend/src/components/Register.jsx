@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../Register.css';
 
 function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,12 +21,14 @@ function Register() {
     const data = await response.json();
     setPassword("");
     setUsername("");
-
+    
     alert(data.msg);
+    navigate('/login'); // Redirect to login page after successful signup
   };
 
   return (
     <form className="register-form" onSubmit={handleSubmit}>
+     <h1>SignUp</h1>
       <input
         type="text"
         placeholder="Username"
